@@ -38,7 +38,7 @@ const Input = styled.input`
   margin-right: 3px;
 `;
 
-const Button = styled.button`
+const Button = styled.button<{ userGender: boolean }>`
   padding: 10px 15px;
   border-radius: 5px;
   border: none;
@@ -63,18 +63,25 @@ const SubmitButton = styled.button`
 `;
 
 const ResultContainer = styled.div`
-  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  border: solid 1px red;
+  justify-content: space-evenly;
+`;
+
+const InputContainer = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
 `;
 
 function FinancialLuck() {
   const [userDate, setUserDate] = useState("");
   const [userGender, setUserGender] = useState(true);
-  const [resultData, setResultData] = useState(null);
+  const [resultData, setResultData] = useState<any>(null);
   const [showResult, setShowResult] = useState(false);
 
   const userDateHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -90,23 +97,20 @@ function FinancialLuck() {
   };
 
   const showResultHandler = () => {
+    // 사용자의 날짜 데이터 초기화
     setUserDate("");
-    setShowResult(!showResult);
+    // 결과를 숨김
+    setShowResult(false);
   };
 
   const fetchData = async () => {
-    console.log({
-      date: userDate,
-      gender: userGender ? "male" : "female",
-    });
     try {
-      const response = await axios.get("여기에 API URL", {
+      const response = await axios.get("여기에 API URL을 입력하세요", {
         params: {
           date: userDate,
           gender: userGender ? "male" : "female",
         },
       });
-      //   setResultData(response.data);
       setResultData(response.data);
       setShowResult(true);
     } catch (error) {
@@ -120,11 +124,12 @@ function FinancialLuck() {
 
       {showResult ? (
         <ResultContainer>
-          <p>{resultData.message}</p>
+          {/* <p>{resultData.message}</p> */}
+          <Title>{"국밥 먹으러 가자 ㄱㄱㄱㄱ"}</Title>
           <SubmitButton onClick={showResultHandler}>{"아싸!🎊"}</SubmitButton>
         </ResultContainer>
       ) : (
-        <>
+        <InputContainer>
           <Title>오늘의 금전운을 확인해보쇼!</Title>
           <InputForm>
             <Input
@@ -132,12 +137,17 @@ function FinancialLuck() {
               value={userDate}
               onChange={userDateHandler}
             ></Input>
-            <Button userGender={userGender} onClick={userGenderHandler}>
+            <Button
+              userGender={userGender}
+              onClick={userGenderHandler}
+              // 타입스크립트에서는 속성을 직접 지정해줘야 합니다.
+              // styled-components에서는 attrs를 사용하지 않습니다.
+            >
               {userGender ? "남자" : "여자"}
             </Button>
           </InputForm>
           <SubmitButton onClick={fetchData}>확인하기</SubmitButton>
-        </>
+        </InputContainer>
       )}
     </Container>
   );
