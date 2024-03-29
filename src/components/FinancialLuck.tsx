@@ -103,12 +103,13 @@ function FinancialLuck() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("여기에 API URL을 입력하세요", {
-        params: {
-          birthDate: userDate,
-          sex: userGender ? "male" : "female",
-        },
+      const currentDate = new Date().toISOString().split("T")[0];
+      const response = await axios.post("http://localhost:8000/api/lucky", {
+        birthDate: userDate.toString(),
+        sex: userGender ? "male" : "female",
+        today: currentDate.toString(),
       });
+      console.log(response);
       setResultData(response.data);
       setShowResult(true);
     } catch (error) {
