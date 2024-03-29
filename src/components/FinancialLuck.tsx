@@ -97,9 +97,7 @@ function FinancialLuck() {
   };
 
   const showResultHandler = () => {
-    // 사용자의 날짜 데이터 초기화
     setUserDate("");
-    // 결과를 숨김
     setShowResult(false);
   };
 
@@ -107,8 +105,8 @@ function FinancialLuck() {
     try {
       const response = await axios.get("여기에 API URL을 입력하세요", {
         params: {
-          date: userDate,
-          gender: userGender ? "male" : "female",
+          birthDate: userDate,
+          sex: userGender ? "male" : "female",
         },
       });
       setResultData(response.data);
@@ -124,8 +122,7 @@ function FinancialLuck() {
 
       {showResult ? (
         <ResultContainer>
-          {/* <p>{resultData.message}</p> */}
-          <Title>{"국밥 먹으러 가자 ㄱㄱㄱㄱ"}</Title>
+          <Title>{resultData.result.content}</Title>
           <SubmitButton onClick={showResultHandler}>{"아싸!🎊"}</SubmitButton>
         </ResultContainer>
       ) : (
@@ -137,12 +134,7 @@ function FinancialLuck() {
               value={userDate}
               onChange={userDateHandler}
             ></Input>
-            <Button
-              userGender={userGender}
-              onClick={userGenderHandler}
-              // 타입스크립트에서는 속성을 직접 지정해줘야 합니다.
-              // styled-components에서는 attrs를 사용하지 않습니다.
-            >
+            <Button userGender={userGender} onClick={userGenderHandler}>
               {userGender ? "남자" : "여자"}
             </Button>
           </InputForm>
