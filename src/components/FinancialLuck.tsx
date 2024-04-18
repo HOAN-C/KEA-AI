@@ -79,10 +79,10 @@ const InputContainer = styled.div`
 `;
 
 function FinancialLuck() {
-  const [userDate, setUserDate] = useState("");
-  const [userGender, setUserGender] = useState(true);
+  const [userDate, setUserDate] = useState<string>("");
+  const [userGender, setUserGender] = useState<boolean>(true);
   const [resultData, setResultData] = useState<any>(null);
-  const [showResult, setShowResult] = useState(false);
+  const [showResult, setShowResult] = useState<boolean>(false);
 
   const userDateHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -113,14 +113,13 @@ function FinancialLuck() {
       setResultData(response.data);
       setShowResult(true);
     } catch (error) {
-      console.error("서버로부터 데이터를 가져오는 데 실패했습니다", error);
+      console.error("Error: ", error);
     }
   };
 
   return (
     <Container>
       <Img src="/Image/Icons/coin.png" alt="FinancialLuck Img" />
-
       {showResult ? (
         <ResultContainer>
           <Title>{resultData.result.content}</Title>
